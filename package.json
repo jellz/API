@@ -6,5 +6,15 @@
   "repository": "git@github.com:MinehutBans/api",
   "author": "Daniel Gulic <danielgulic@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "joi": "^13.7.0",
+    "jsonwebtoken": "^8.3.0",
+    "mcapi": "^1.0.1",
+    "morgan": "^1.9.1",
+    "rethinkdbdash": "^2.3.31"
+  }
 }
