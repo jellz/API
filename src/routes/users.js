@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     await r.table('users').insert({
       id: uuid,
       username,
-      createdAt: Date.now(),
+      created_at: Date.now(),
       staff: false
     }).run();
   } else await r.table('users').get(uuid).update({ username }).run();
