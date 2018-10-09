@@ -30,7 +30,13 @@ router.post('/', async (req, res) => {
 router.delete('/:uuid', async (req, res) => {
   if (!req.query.access || req.query.access !== accessToken) return res.status(req.query.access ? 403 : 401).json({ ok: false, errors: ['Invalid access token'] });
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
-  if (!player) return res.status(400).json({ ok: false, errors: ['Player is not blacklisted'] });
+  if (!player) return res.status(404).json({ ok: false, errors: ['Player is not blacklisted'] });
   await r.table('blacklisted_players').get(req.params.uuid).delete().run();
   res.json({ ok: true });
+});
+
+router.get('/:uuid', async (req, res) => {
+  let player = await r.table('blacklisted_players').get(req.params.uuid).run();
+  if (!player) return res.status(404).json({ ok: false, errors: ['Player is not blacklisted'] });
+  res.json({ ok: true, blacklisted: player ? true : false, player });
 });
