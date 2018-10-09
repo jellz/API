@@ -7,7 +7,6 @@ const { jwtKey, r } = require('../index.js');
 router.post('/', async (req, res) => {
   if (!req.query.code || req.query.code.length !== 6) return res.status(400).json({ ok: false, errors: ['Invalid code'] })
   let uuid = await mcapi.oAuthToUUID(req.query.code);
-  console.log(uuid);
   if (uuid == 'fail') return res.status(400).json({ ok: false, errors: ['Invalid code'] })
   let user = await r.table('users').get(uuid).run();
   let username = await mcapi.uuidToUsername(uuid);
