@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:uuid', async (req, res) => {
+  req.params.uuid = req.params.uuid(/-/g, '');
   if (!req.query.access || req.query.access !== accessToken) return res.status(req.query.access ? 403 : 401).json({ ok: false, errors: ['Invalid access token'] });
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
   if (!player) return res.status(404).json({ ok: false, errors: ['Player is not blacklisted'] });
@@ -36,6 +37,7 @@ router.delete('/:uuid', async (req, res) => {
 });
 
 router.get('/:uuid', async (req, res) => {
+  req.params.uuid = req.params.uuid(/-/g, '');
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
   if (!player) return res.status(404).json({ ok: false, blacklisted: false, errors: ['Player is not blacklisted'] });
   res.json({ ok: true, blacklisted: true, player });
