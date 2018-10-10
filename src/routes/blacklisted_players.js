@@ -38,5 +38,5 @@ router.delete('/:uuid', async (req, res) => {
 router.get('/:uuid', async (req, res) => {
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
   if (!player) return res.status(404).json({ ok: false, blacklisted: false, errors: ['Player is not blacklisted'] });
-  res.json({ ok: true, blacklisted: player ? true : false, player });
+  res.json({ ok: true, blacklisted: true, player });
 });
