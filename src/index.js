@@ -17,6 +17,7 @@ app.use(require('express-jwt')({ secret: jwtKey, credentialsRequired: false }), 
   } catch(err) {}
 });
 
+app.get('/', (req, res) => res.json({ ok: true }));
 app.use('/api/users', require('./routes/users.js'));
 app.use('/api/blacklisted_players', require('./routes/blacklisted_players.js'));
 
