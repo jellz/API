@@ -5,10 +5,10 @@ const Joi = require('joi');
 const { r } = require('../index.js');
 const { handleJoi } = require('../util.js');
 
-const newBlacklistedPlayerSchema = Joi.object().required().keys({
+const newBlacklistedPlayerSchema = Joi.object().keys({
   username: Joi.string().min(2).max(16).required(),
   reason: Joi.string().allow(null).max(100).required()
-});
+}).required();
 
 router.post('/', async (req, res) => {
   if (!req.query.access || req.query.access !== process.env.ACCESS_TOKEN) return res.status(403).json({ ok: false, error: 'Invalid access token' });
