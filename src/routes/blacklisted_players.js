@@ -4,7 +4,6 @@ const mcapi = require('mcapi');
 const Joi = require('joi');
 const { r } = require('../index.js');
 const { handleJoi } = require('../util.js');
-const { accessToken } = require('../../config.json');
 
 const newBlacklistedPlayerSchema = Joi.object().required().keys({
   username: Joi.string().min(2).max(16).required(),
@@ -12,7 +11,7 @@ const newBlacklistedPlayerSchema = Joi.object().required().keys({
 });
 
 router.post('/', async (req, res) => {
-  if (!req.query.access || req.query.access !== accessToken) return res.status(403).json({ ok: false, error: 'Invalid access token' });
+  if (!req.query.access || req.query.access !== process.env.ACCESS_TOKEN) return res.status(403).json({ ok: false, error: 'Invalid access token' });
   if (!handleJoi(newBlacklistedPlayerSchema, req, res)) return;
   let uuid = await mcapi.usernameToUUID(req.body.username);
   if (uuid == 'fail') return res.status(400).json({ ok: false, error: 'Invalid username' });
@@ -29,7 +28,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:uuid', async (req, res) => {
   req.params.uuid = req.params.uuid.replace(/-/g, '');
-  if (!req.query.access || req.query.access !== accessToken) return res.status(403).json({ ok: false, error: 'Invalid access token' });
+  if (!req.query.access || req.query.access !== process.env.ACCESS_TOKEN) return res.status(403).json({ ok: false, error: 'Invalid access token' });
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
   if (!player) return res.status(404).json({ ok: false, error: 'Player is not blacklisted' });
   await r.table('blacklisted_players').get(req.params.uuid).delete().run();
