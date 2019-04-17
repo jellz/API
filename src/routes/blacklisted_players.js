@@ -12,7 +12,7 @@ const newBlacklistedPlayerSchema = Joi.object().required().keys({
 });
 
 router.post('/', async (req, res) => {
-  if (!req.query.access || req.query.access !== accessToken) return res.status(req.query.access ? 403 : 401).json({ ok: false, error: 'Invalid access token' });
+  if (!req.query.access || req.query.access !== accessToken) return res.status(403).json({ ok: false, error: 'Invalid access token' });
   if (!handleJoi(newBlacklistedPlayerSchema, req, res)) return;
   let uuid = await mcapi.usernameToUUID(req.body.username);
   if (uuid == 'fail') return res.status(400).json({ ok: false, error: 'Invalid username' });
