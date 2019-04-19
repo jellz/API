@@ -30,7 +30,7 @@ router.delete('/:uuid', async (req, res) => {
   req.params.uuid = req.params.uuid.replace(/-/g, '');
   if (!req.query.access || req.query.access !== process.env.ACCESS_TOKEN) return res.status(403).json({ ok: false, error: 'Invalid access token' });
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
-  if (!player) return res.status(404).json({ ok: false, error: 'Player is not blacklisted' });
+  if (!player) return res.json({ ok: false, error: 'Player is not blacklisted' });
   await r.table('blacklisted_players').get(req.params.uuid).delete().run();
   res.json({ ok: true });
 });
@@ -38,6 +38,6 @@ router.delete('/:uuid', async (req, res) => {
 router.get('/:uuid', async (req, res) => {
   req.params.uuid = req.params.uuid.replace(/-/g, '');
   let player = await r.table('blacklisted_players').get(req.params.uuid).run();
-  if (!player) return res.status(404).json({ ok: false, blacklisted: false, error: 'Player is not blacklisted' });
+  if (!player) return res.json({ ok: true, blacklisted: false });
   res.json({ ok: true, blacklisted: true, player });
 });
